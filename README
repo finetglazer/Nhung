@@ -1,0 +1,76 @@
+# ESP32-S3 AI Smartwatch
+
+A personal AI assistant smartwatch project built with the ESP32-S3 platform.
+
+## Project Overview
+
+This project aims to create a wearable AI assistant with voice recognition capabilities, notification management, and basic smartwatch functionality. The device will connect to WiFi for cloud service communication while maintaining extended battery life.
+
+### Key Features
+
+- Time display and basic watch functionality
+- Voice-activated AI assistant integration
+- Notification management and reminders
+- Low-power operation for extended battery life
+- Simple and intuitive UI on a TFT display
+
+## Hardware Requirements
+
+- Adafruit Feather ESP32-S3 TFT board
+- Microphone module (e.g., I2S MEMS microphone)
+- Battery (LiPo compatible with ESP32-S3 charging circuit)
+- Buttons or touch interface for navigation
+- Optional: RTC module for accurate timekeeping
+
+## Software Requirements
+
+- PlatformIO development environment
+- Arduino framework for ESP32
+- TFT_eSPI library for display management
+- WiFi connectivity libraries
+- Audio processing libraries (to be determined)
+
+## Project Structure
+
+```
+├── .vscode/              # VS Code configuration
+├── include/              # Header files
+├── lib/                  # Project-specific libraries
+├── src/                  # Source files
+│   └── main.cpp          # Main application code
+├── test/                 # Test files
+├── .gitignore            # Git ignore file
+└── platformio.ini        # PlatformIO configuration
+```
+
+## Setup Instructions
+
+1. Clone this repository
+2. Open the project in VS Code with PlatformIO extension
+3. Configure the TFT_eSPI library for your specific display
+4. Build and upload the project to your ESP32-S3 board
+
+## Development Phases
+
+The project is being developed in six phases:
+
+1. Project Setup & Architecture
+2. Core Hardware Implementation
+3. Connectivity & Backend
+4. AI Assistant Implementation
+5. Testing & Optimization
+6. Final Implementation
+
+## Current Status
+
+Currently in Phase 1: Project Setup & Architecture.
+
+## License
+
+tranhung10122003@gmail
+vinhhiep03.work@gmail.com
+
+## Contributors
+
+Manh Hung 
+Vinh Hiep
