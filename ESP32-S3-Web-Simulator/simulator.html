@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP32-S3 AI Smartwatch Simulator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .simulator {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .device {
+            background-color: #333;
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .screen {
+            background-color: #000;
+            width: 240px;
+            height: 135px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+        }
+        .button {
+            background-color: #555;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            user-select: none;
+        }
+        .button:active {
+            background-color: #777;
+        }
+        .panels {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .panel {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            min-width: 300px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .panel h3 {
+            margin-top: 0;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .slider-container {
+            margin: 10px 0;
+        }
+        #log-container {
+            background-color: #111;
+            color: #ddd;
+            font-family: monospace;
+            padding: 10px;
+            border-radius: 5px;
+            height: 200px;
+            overflow-y: auto;
+            font-size: 12px;
+            width: 100%;
+        }
+        .full-width {
+            width: 100%;
+            max-width: 800px;
+        }
+    </style>
+</head>
+<body>
+    <h1>ESP32-S3 AI Smartwatch Simulator</h1>
+    
+    <div class="simulator">
+        <div class="device">
+            <div class="screen">
+                <canvas id="display" width="240" height="135"></canvas>
+            </div>
+            <div class="controls">
+                <button id="btn-up" class="button">▲</button>
+                <button id="btn-select" class="button">OK</button>
+                <button id="btn-down" class="button">▼</button>
+            </div>
+        </div>
+        
+        <div class="panels">
+            <div class="panel">
+                <h3>Hardware Controls</h3>
+                <div class="slider-container">
+                    <label for="battery-level">Battery Level: <span id="battery-percentage">75%</span></label>
+                    <input type="range" id="battery-level" min="0" max="100" value="75" class="full-width">
+                </div>
+                <div class="buttons">
+                    <button id="btn-sleep">Force Sleep</button>
+                    <button id="btn-wake">Wake Device</button>
+                    <button id="btn-reset">Reset Device</button>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <h3>Time Control</h3>
+                <div>
+                    <label for="time-speed">Time Speed: <span id="time-speed-value">1x</span></label>
+                    <input type="range" id="time-speed" min="1" max="100" value="1" class="full-width">
+                </div>
+                <div>
+                    Current Time: <span id="current-time">12:00:00</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="panel full-width">
+        <h3>Log Output</h3>
+        <div id="log-container"></div>
+    </div>
+    
+    <!-- Load the ESP32 class adapters -->
+    <script src="esp32-adapters.js"></script>
+    
+    <!-- Load your application code -->
+    <script src="simulator-app.js"></script>
+</body>
+</html>
