@@ -1,0 +1,214 @@
+// #include <Arduino.h>
+// #include "DisplayManager.h"
+// #include "UIManager.h"
+// #include "InputManager.h"
+// #include "PowerManager.h"
+
+// // Create instances of our manager classes
+// DisplayManager displayManager;
+// InputManager inputManager;
+// PowerManager powerManager;
+// UIManager uiManager(displayManager);
+
+// // Forward declarations of screen classes
+// class ClockScreen;
+// class MenuScreen;
+
+// // Global variables
+// ClockScreen* clockScreen;
+// MenuScreen* menuScreen;
+
+// // Clock screen implementation
+// class ClockScreen : public Screen {
+// public:
+//     ClockScreen(UIManager& uiManager, DisplayManager& displayManager)
+//         : Screen(uiManager, displayManager) {}
+    
+//     void onActivate() override {
+//         _displayManager.clear();
+//         _displayManager.drawText("Clock Screen", 10, 10, TFT_WHITE, 2);
+//     }
+    
+//     void onDeactivate() override {
+//         // Nothing to do here yet
+//     }
+    
+//     void update() override {
+//         // Get the current time (placeholder values for now)
+//         int hour = 12;
+//         int minute = 30;
+        
+//         // Draw the time
+//         _displayManager.drawTime(60, 60, hour, minute);
+        
+//         // Draw the battery status
+//         _displayManager.drawBattery(200, 10, powerManager.getBatteryPercentage());
+//     }
+    
+//     void handleButtonPress(uint8_t buttonId) override {
+//         if (buttonId == BUTTON_SELECT) {
+//             // Switch to menu screen
+//             _uiManager.setScreen(menuScreen);
+//         }
+//     }
+    
+//     void handleButtonLongPress(uint8_t buttonId) override {
+//         // Not used yet
+//     }
+// };
+
+// // Menu screen implementation
+// class MenuScreen : public Screen {
+// public:
+//     MenuScreen(UIManager& uiManager, DisplayManager& displayManager)
+//         : Screen(uiManager, displayManager), _selectedItem(0) {}
+    
+//     void onActivate() override {
+//         _displayManager.clear();
+//         _displayManager.drawText("Menu", 10, 10, TFT_WHITE, 2);
+//         _drawMenuItems();
+//     }
+    
+//     void onDeactivate() override {
+//         // Nothing to do here yet
+//     }
+    
+//     void update() override {
+//         // Nothing to continuously update here
+//     }
+    
+//     void handleButtonPress(uint8_t buttonId) override {
+//         if (buttonId == BUTTON_UP) {
+//             if (_selectedItem > 0) {
+//                 _selectedItem--;
+//                 _drawMenuItems();
+//             }
+//         }
+//         else if (buttonId == BUTTON_DOWN) {
+//             if (_selectedItem < 3) {
+//                 _selectedItem++;
+//                 _drawMenuItems();
+//             }
+//         }
+//         else if (buttonId == BUTTON_SELECT) {
+//             // Handle menu selection
+//             switch (_selectedItem) {
+//                 case 0:
+//                     // Settings
+//                     break;
+//                 case 1:
+//                     // Notifications
+//                     break;
+//                 case 2:
+//                     // Voice Assistant
+//                     break;
+//                 case 3:
+//                     // Back to clock
+//                     _uiManager.setScreen(clockScreen);
+//                     break;
+//             }
+//         }
+//     }
+    
+//     void handleButtonLongPress(uint8_t buttonId) override {
+//         if (buttonId == BUTTON_SELECT) {
+//             // Go back to clock screen on long press
+//             _uiManager.setScreen(clockScreen);
+//         }
+//     }
+
+// private:
+//     uint8_t _selectedItem;
+    
+//     void _drawMenuItems() {
+//         const char* menuItems[] = {
+//             "Settings",
+//             "Notifications",
+//             "Voice Assistant",
+//             "Back to Clock"
+//         };
+        
+//         for (int i = 0; i < 4; i++) {
+//             uint16_t color = (i == _selectedItem) ? TFT_GREEN : TFT_WHITE;
+//             _displayManager.drawText(menuItems[i], 20, 40 + i * 20, color, 1);
+//         }
+//     }
+// };
+
+// // Button press callback
+// void handleButtonPress(uint8_t buttonId) {
+//     // Reset inactivity timer when button is pressed
+//     powerManager.resetInactivityTimer();
+    
+//     // Forward the button press to the current screen
+//     uiManager.handleButtonPress(buttonId);
+// }
+
+// // Button long press callback
+// void handleButtonLongPress(uint8_t buttonId) {
+//     // Reset inactivity timer when button is long pressed
+//     powerManager.resetInactivityTimer();
+    
+//     // Forward the button long press to the current screen
+//     uiManager.handleButtonLongPress(buttonId);
+// }
+
+// void setup() {
+//     // Initialize serial communication for debugging
+//     Serial.begin(115200);
+//     Serial.println("ESP32-S3 AI Smartwatch starting...");
+    
+//     // Initialize display
+//     if (!displayManager.begin()) {
+//         Serial.println("Failed to initialize display!");
+//         while (1) delay(100); // Halt if display init fails
+//     }
+    
+//     // Display startup message
+//     displayManager.clear();
+//     displayManager.drawText("Starting...", 10, 10, TFT_WHITE, 2);
+    
+//     // Initialize power management
+//     if (!powerManager.begin()) {
+//         Serial.println("Warning: Power management initialization issues!");
+//     }
+    
+//     // Set up auto sleep after 1 minute of inactivity
+//     powerManager.setAutoSleep(true, 60000);
+    
+//     // Initialize input buttons
+//     inputManager.registerButton(BUTTON_UP, 14, true);     // GPIO pin 14, active low
+//     inputManager.registerButton(BUTTON_DOWN, 21, true);   // GPIO pin 21, active low
+//     inputManager.registerButton(BUTTON_SELECT, 38, true); // GPIO pin 38, active low
+    
+//     // Set up button callbacks
+//     inputManager.setButtonPressCallback(handleButtonPress);
+//     inputManager.setButtonLongPressCallback(handleButtonLongPress);
+    
+//     // Create screen objects
+//     clockScreen = new ClockScreen(uiManager, displayManager);
+//     menuScreen = new MenuScreen(uiManager, displayManager);
+    
+//     // Initialize UI manager
+//     uiManager.begin();
+    
+//     // Set the initial screen to clock
+//     uiManager.setScreen(clockScreen);
+    
+//     // Startup complete
+//     Serial.println("Initialization complete!");
+// }
+
+// void loop() {
+//     // Update the input manager to check for button presses
+//     inputManager.update();
+    
+//     // Update the power manager
+//     powerManager.update();
+    
+//     // Update the UI
+//     uiManager.update();
+    
+//     // Small delay to reduce power consumption
+//     delay(10);
+// }
